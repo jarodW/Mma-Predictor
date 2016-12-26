@@ -101,7 +101,6 @@ public class FighterDB {
         ResultSet rs =  preparedStatement.executeQuery();
         rs =  preparedStatement.executeQuery();
         if(rs.next()){
-        	System.out.println(rs.getDate("birthdate"));
         	fighter.setBirthdate(rs.getDate("birthdate"));
         	fighter.setDraws(rs.getString("draws"));
         	fighter.setFighterUrl(rs.getString("fighterUrl"));

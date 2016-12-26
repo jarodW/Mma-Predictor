@@ -14,6 +14,7 @@ import org.jsoup.select.Elements;
 
 import Controller.MmaScraper;
 import Controller.Predictor;
+import models.DataPointsDB;
 import models.Database;
 import models.Fighter;
 import models.FighterDB;
@@ -28,7 +29,9 @@ public class Test {
     	Scanner scan = new Scanner(System.in);
     	Connection connection = Database.createDatabase();
       	MmaScraper mma = new MmaScraper();
-      	Predictor predict = new Predictor();
+    	DataPointsDB data = new DataPointsDB();
+    	data.getDataPoints();
+      	Predictor predict = new Predictor(data);
       	Boolean loop = true;
       	HashSet<String> set = setWeightClasses(); 
     	
@@ -45,6 +48,7 @@ public class Test {
     		    	if(answer.equals("yes") || answer.equals("y"))
     		    		add = true;
     			    Fighter fighter = mma.serachFighter(name,add);
+    			    data.getDataPoints();
         	    	connection.commit();
     		    	System.out.println("finished");
     		    	break;
@@ -84,7 +88,6 @@ public class Test {
     				break;
         	    default:
         			System.out.println("command not supported");
-        			scan.nextLine();
         			break;
     		}
     	}

@@ -11,8 +11,8 @@ import models.FighterDB;
 
 public class Predictor {
 	private DataPointsDB data;
-	private FighterDB fd = new FighterDB();
-	private FightResultDB fr = new FightResultDB();
+	private FighterDB fd;
+	private FightResultDB fr;
 	private ArrayList<DataPoints> dataPoints;
 	private int totalFights;
 	private int wins;
@@ -44,52 +44,12 @@ public class Predictor {
 	private int lossesStreakEqual;
 	
 	
-	public Predictor(){
-		data = new DataPointsDB();
+	public Predictor(DataPointsDB data){
+		fr = new FightResultDB();
+		fd = new FighterDB();
+		this.data = data;
 		data.createDataPoints();
 		dataPoints = data.getDataPoints();
-	}
-	
-	public void listFighters(){
-		fd.getFighters();
-	}
-
-	public void listFighters(String weightclass) {
-		fd.getFighters(weightclass);
-		
-	}
-	
-	private void calculateData(){
-		if(data.getNumResults() > totalFights){
-			totalFights = data.getNumResults();
-			wins = data.getNumResults("win");
-			losses = data.getNumResults("loss");
-			draws = data.getNumResults("draw");
-			winsPerGreater = data.cmpFightersWinPer(">", "win");
-			winsPerLower = data.cmpFightersWinPer("<", "win");
-			winsPerEqual = data.cmpFightersWinPer("=", "win");
-			lossesPerGreater = data.cmpFightersWinPer(">", "loss");
-			lossesPerLower = data.cmpFightersWinPer("<", "loss");
-			lossesPerEqual = data.cmpFightersWinPer("=", "loss");
-			winsStreakLonger = data.cmpFightersWinStreak(">", "win");
-			winsStreakShorter = data.cmpFightersWinStreak("<", "win");
-			winsStreakEqual = data.cmpFightersWinStreak("=", "win");
-			lossesStreakLonger = data.cmpFightersWinStreak(">", "loss");
-			lossesStreakShorter = data.cmpFightersWinStreak("<", "loss");
-			lossesStreakEqual = data.cmpFightersWinStreak("=", "loss");
-			winsAgeOlder = data.cmpFightersAge(">", "win");
-			winsAgeYounger = data.cmpFightersAge("<", "win");
-			winsAgeEqual = data.cmpFightersAge("=", "win");
-			lossesAgeOlder = data.cmpFightersAge(">", "loss");
-			lossesAgeYounger = data.cmpFightersAge("<", "loss");
-			lossesAgeEqual = data.cmpFightersAge("=", "loss");
-			winsExpMore = data.cmpFightersExp(">", "win");
-			winsExpLess = data.cmpFightersExp("<", "win");
-			winsExpEqual = data.cmpFightersExp("=", "win");
-			lossesExpMore = data.cmpFightersExp(">", "loss");
-			lossesExpLess = data.cmpFightersExp("<", "loss");
-			lossesExpEqual = data.cmpFightersExp("=", "loss");
-		}
 	}
 	
 	public void compareFightersSimpleNaiveBayes(String name1, String name2){
@@ -158,9 +118,56 @@ public class Predictor {
 		
 		posterior1 = ((double)wins/totalFights) * ageWinProb * expWinProb * winstreakWinProb *  winperWinProb;
 		posterior2 = ((double)losses/totalFights) * ageLossProb * expLossProb * winstreakLossProb *  winperLossProb;
-		System.out.println("Posterior for " + fighter1.getName()  + ": " + posterior1);
-		System.out.println("Posterior for " + fighter2.getName()  + ": " + posterior2);
+		System.out.println("Posterior for " + fighter1.getName()  + " beating " + fighter2.getName() + ": " + posterior1);
+		System.out.println("Posterior for " + fighter2.getName()  + " beating " + fighter2.getName() + ": " + posterior2);
 		System.out.println("Predicted Winner: "  + (posterior1 > posterior2 ? fighter1.getName():fighter2.getName()));
 	}
 	
+	public void cmpFightersSimplePerceptron(String name1, String name2){
+		int interations = 100;
+		double learningRate = .001;
+		int numInstances = 100;
+	}
+	
+	private void calculateData(){
+		if(data.getNumResults() > totalFights){
+			totalFights = data.getNumResults();
+			wins = data.getNumResults("win");
+			losses = data.getNumResults("loss");
+			draws = data.getNumResults("draw");
+			winsPerGreater = data.cmpFightersWinPer(">", "win");
+			winsPerLower = data.cmpFightersWinPer("<", "win");
+			winsPerEqual = data.cmpFightersWinPer("=", "win");
+			lossesPerGreater = data.cmpFightersWinPer(">", "loss");
+			lossesPerLower = data.cmpFightersWinPer("<", "loss");
+			lossesPerEqual = data.cmpFightersWinPer("=", "loss");
+			winsStreakLonger = data.cmpFightersWinStreak(">", "win");
+			winsStreakShorter = data.cmpFightersWinStreak("<", "win");
+			winsStreakEqual = data.cmpFightersWinStreak("=", "win");
+			lossesStreakLonger = data.cmpFightersWinStreak(">", "loss");
+			lossesStreakShorter = data.cmpFightersWinStreak("<", "loss");
+			lossesStreakEqual = data.cmpFightersWinStreak("=", "loss");
+			winsAgeOlder = data.cmpFightersAge(">", "win");
+			winsAgeYounger = data.cmpFightersAge("<", "win");
+			winsAgeEqual = data.cmpFightersAge("=", "win");
+			lossesAgeOlder = data.cmpFightersAge(">", "loss");
+			lossesAgeYounger = data.cmpFightersAge("<", "loss");
+			lossesAgeEqual = data.cmpFightersAge("=", "loss");
+			winsExpMore = data.cmpFightersExp(">", "win");
+			winsExpLess = data.cmpFightersExp("<", "win");
+			winsExpEqual = data.cmpFightersExp("=", "win");
+			lossesExpMore = data.cmpFightersExp(">", "loss");
+			lossesExpLess = data.cmpFightersExp("<", "loss");
+			lossesExpEqual = data.cmpFightersExp("=", "loss");
+		}
+	}
+	
+	public void listFighters(){
+		fd.getFighters();
+	}
+
+	public void listFighters(String weightclass) {
+		fd.getFighters(weightclass);
+		
+	}
 }

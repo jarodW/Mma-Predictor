@@ -13,7 +13,6 @@ public class Database {
   
   public static Connection createDatabase(){
 
-	//System.out.println("-------- MySQL JDBC Connection Testing ------------");
 	String script = "database.sql";
 	try {
 		Class.forName("com.mysql.jdbc.Driver");
@@ -22,8 +21,6 @@ public class Database {
 		e.printStackTrace();
 		return null;
 	}
-
-	//System.out.println("MySQL JDBC Driver Registered!");
 
 	try {
 		connection = DriverManager

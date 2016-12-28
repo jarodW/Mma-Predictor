@@ -33,6 +33,8 @@ public class NaiveBayes {
 	private int lossesStreakShorter;
 	private int lossesStreakEqual;
 	
+	
+	//Use comparisons between the fighters stats to calculate the posterior of fighter1 wining of losing. 
 	public void predict(Fighter fighter1, Fighter fighter2){
 		double posterior1;
 		double posterior2;
@@ -96,11 +98,13 @@ public class NaiveBayes {
 		
 		posterior1 = ((double)wins/totalFights) * ageWinProb * expWinProb * winstreakWinProb *  winperWinProb;
 		posterior2 = ((double)losses/totalFights) * ageLossProb * expLossProb * winstreakLossProb *  winperLossProb;
+		System.out.println("Naive Bayes");
 		System.out.println("Posterior for " + fighter1.getName()  + " beating " + fighter2.getName() + ": " + posterior1);
 		System.out.println("Posterior for " + fighter2.getName()  + " beating " + fighter2.getName() + ": " + posterior2);
 		System.out.println("Predicted Winner: "  + (posterior1 > posterior2 ? fighter1.getName():fighter2.getName()));
 	}
 	
+	//Calculate the totals used to calculate the probabilities.
 	public void trainData(DataPointsDB data){
 		if(data.getNumResults() > totalFights){
 			totalFights = data.getNumResults();

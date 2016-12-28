@@ -85,6 +85,7 @@ public class Test {
     				System.out.println("Fighter 2");
     				String name2 = scan.nextLine();
     				predict.compareFightersSimpleNaiveBayes(name1, name2);
+    				predict.compareFightersSimplePerceptron(name1, name2);
     				break;
         	    default:
         			System.out.println("command not supported");

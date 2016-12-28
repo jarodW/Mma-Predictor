@@ -15,11 +15,13 @@ public class Predictor {
 	private FightResultDB fr;
 	private ArrayList<DataPoints> dataPoints;
 	private NaiveBayes nb;
+	private Perceptron p;
 	
 	public Predictor(DataPointsDB data){
 		fr = new FightResultDB();
 		fd = new FighterDB();
 		nb = new NaiveBayes();
+		p = new Perceptron();
 		this.data = data;
 		data.createDataPoints();
 		dataPoints = data.getDataPoints();
@@ -34,7 +36,12 @@ public class Predictor {
 			nb.predict(fighter1,fighter2);
 	}
 	
-	public void cmpFightersSimplePerceptron(String name1, String name2){
+	public void compareFightersSimplePerceptron(String name1, String name2){
+		p.trainData(data);
+		Fighter fighter1 = fd.getFighter(name1);
+		Fighter fighter2 = fd.getFighter(name2);
+		if(fighter1 != null && fighter2 != null)
+			p.predict(fighter1,fighter2);
 	}
 	
 	public void listFighters(){
